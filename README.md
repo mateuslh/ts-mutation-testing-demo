@@ -1,7 +1,7 @@
-# java-mutation-testing-demo
+# ts-mutation-testing-demo
 
-Projeto de exemplo demonstrando **teste de mutação** em Java usando
-[PITest (PIT)](https://pitest.org/) com JUnit 5 e Maven.
+Projeto de exemplo demonstrando **teste de mutação** em TypeScript usando
+[StrykerJS](https://stryker-mutator.io/) com [Vitest](https://vitest.dev/).
 
 ## O que é teste de mutação?
 
@@ -22,9 +22,10 @@ robusta é a suíte de testes.
 ## Estrutura
 
 ```
-src/main/java/com/mateuslh/calc/Calculadora.java   # código sob teste
-src/test/java/com/mateuslh/calc/CalculadoraTest.java # testes JUnit 5
-pom.xml                                             # build + plugin PITest
+src/calculadora.ts        # código sob teste
+src/calculadora.test.ts   # testes Vitest
+stryker.config.json       # configuração do StrykerJS
+vitest.config.ts          # configuração do Vitest
 ```
 
 A `Calculadora` implementa operações aritméticas, verificação de paridade e
@@ -33,40 +34,51 @@ máximo entre dois valores — lógica suficiente para gerar mutantes variados
 
 ## Pré-requisitos
 
-- JDK 21+
-- Maven 3.9+
+- Node.js 20+
 
 ## Como rodar
+
+Instale as dependências:
+
+```bash
+npm install
+```
 
 ### Testes unitários
 
 ```bash
-mvn clean test
+npm test
 ```
 
 ### Análise de mutação
 
 ```bash
-mvn org.pitest:pitest-maven:mutationCoverage
+npm run mutation
 ```
 
-O relatório HTML é gerado em `target/pit-reports/index.html`.
+O relatório HTML é gerado em `reports/mutation/mutation.html`.
 
 ## Resultado atual
 
 ```
->> Generated 16 mutations Killed 15 (94%)
->> Line Coverage (for mutated classes only): 11/11 (100%)
->> Test strength 94%
+----------------|------------------|----------|-----------|------------|
+File            | % Mutation score | # killed | # survived | # no cov  |
+----------------|------------------|----------|-----------|------------|
+All files       |      95.83       |    23    |     1      |     0     |
+----------------|------------------|----------|-----------|------------|
 ```
 
-O `pom.xml` define um `mutationThreshold` de **90%**, então o build falha caso o
-score caia abaixo desse valor — garantindo que a qualidade dos testes não
-regrida.
+O `stryker.config.json` define um `break` threshold de **90%**, então o comando
+falha caso o score caia abaixo desse valor — garantindo que a qualidade dos
+testes não regrida.
+
+> ℹ️ O único mutante sobrevivente (`>=` → `>` no método `maximo`) é um **mutante
+> equivalente**: quando os dois valores são iguais, o resultado numérico é o
+> mesmo independentemente do operador, então nenhum teste consegue distingui-lo.
+> É um exemplo clássico do limite teórico do teste de mutação.
 
 ## Tecnologias
 
-- Java 21
-- JUnit 5 (Jupiter)
-- PITest 1.18.2 + `pitest-junit5-plugin`
-- Maven
+- TypeScript 5
+- Vitest
+- StrykerJS (`@stryker-mutator/core` + `@stryker-mutator/vitest-runner`)

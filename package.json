@@ -1,0 +1,25 @@
+{
+  "name": "ts-mutation-testing-demo",
+  "version": "1.0.0",
+  "description": "Demonstração de teste de mutação em TypeScript com StrykerJS + Vitest",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "mutation": "stryker run"
+  },
+  "keywords": [
+    "mutation-testing",
+    "stryker",
+    "typescript",
+    "vitest"
+  ],
+  "author": "mateuslh",
+  "license": "MIT",
+  "devDependencies": {
+    "@stryker-mutator/core": "^8.7.1",
+    "@stryker-mutator/vitest-runner": "^8.7.1",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
